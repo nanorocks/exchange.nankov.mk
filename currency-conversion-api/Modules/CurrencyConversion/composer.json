@@ -1,0 +1,30 @@
+{
+    "name": "nwidart/currencyconversion",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\CurrencyConversion\\": "app/",
+            "Modules\\CurrencyConversion\\Database\\Factories\\": "database/factories/",
+            "Modules\\CurrencyConversion\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\CurrencyConversion\\Tests\\": "tests/"
+        }
+    }
+}

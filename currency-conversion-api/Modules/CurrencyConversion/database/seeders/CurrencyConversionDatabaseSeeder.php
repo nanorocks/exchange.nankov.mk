@@ -1,0 +1,16 @@
+<?php
+
+namespace Modules\CurrencyConversion\Database\Seeders;
+
+use Illuminate\Database\Seeder;
+
+class CurrencyConversionDatabaseSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        // $this->call([]);
+    }
+}
