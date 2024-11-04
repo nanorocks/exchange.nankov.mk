@@ -4,8 +4,6 @@ namespace Modules\CurrencyConversion\Console;
 
 use Illuminate\Console\Command;
 use Modules\CurrencyConversion\Http\Services\Interfaces\ICurrencyConversionService;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
 
 class SupportedFixerExchangeRateCommand extends Command
 {

@@ -3,8 +3,7 @@
 namespace Modules\CurrencyConversion\Console;
 
 use Illuminate\Console\Command;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
+use Modules\CurrencyConversion\Http\Services\Interfaces\ICurrencyConversionService;
 
 class SyncFixerExchangeRateCommand extends Command
 {
@@ -31,30 +30,8 @@ class SyncFixerExchangeRateCommand extends Command
      */
     public function handle()
     {
-        //
+        $currencyConversionService = resolve(ICurrencyConversionService::class);
 
-        dd(config('modules.envs.fixer-exchange-rate-currency-api-key'));
-
-        // todo use service to call the API and sync the DB table
-    }
-
-    /**
-     * Get the console command arguments.
-     */
-    protected function getArguments(): array
-    {
-        return [
-            ['example', InputArgument::REQUIRED, 'An example argument.'],
-        ];
-    }
-
-    /**
-     * Get the console command options.
-     */
-    protected function getOptions(): array
-    {
-        return [
-            ['example', null, InputOption::VALUE_OPTIONAL, 'An example option.', null],
-        ];
+        $currencyConversionService->syncFixerExchangeRateEndpoint();
     }
 }

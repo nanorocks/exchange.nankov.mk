@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Modules\CurrencyConversion\Http\Repositories;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Modules\CurrencyConversion\Http\Repositories\Interfaces\ISupportedCurrencyRepository;
 use Modules\CurrencyConversion\Models\SupportedCurrency;
 
@@ -27,5 +28,10 @@ class SupportedCurrencyRepository implements ISupportedCurrencyRepository
         }, array_keys($data), $data);
 
         return SupportedCurrency::insert($dataInsert);
+    }
+
+    public function all(): Collection
+    {
+        return SupportedCurrency::all();
     }
 }

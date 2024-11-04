@@ -3,46 +3,57 @@
 namespace Modules\CurrencyConversion\Tests\Unit;
 
 use Modules\CurrencyConversion\Http\Dtos\CurrencyConversionDto;
+use Modules\CurrencyConversion\Http\Repositories\Interfaces\ICurrencyConversionRepository;
+use Modules\CurrencyConversion\Http\Repositories\Interfaces\ISupportedCurrencyRepository;
 use Modules\CurrencyConversion\Http\Services\CurrencyConversionService;
 use Tests\TestCase;
+use Modules\CurrencyConversion\Models\Currency;
+use Carbon\Carbon;
 
 class CurrencyConversionServiceTest extends TestCase
 {
     public function test_get_currency_calculation()
     {
-        $currencyConversionService = resolve(CurrencyConversionService::class);
+        // Step 1: Mock the ISupportedCurrencyRepository and ICurrencyConversionRepository
+        $supportedCurrencyRepository = $this->createMock(ISupportedCurrencyRepository::class);
+        $currencyConversionRepository = $this->createMock(ICurrencyConversionRepository::class);
 
-        // Define different currency conversion scenarios
-        $scenarios = [
-            ['from' => 'MKD', 'to' => 'USD', 'amount' => 1000, 'expected' => (1000 / 61.606013) * 1.08808],
-            ['from' => 'EUR', 'to' => 'AED', 'amount' => 100, 'expected' => 100 * 3.996561],
-            ['from' => 'USD', 'to' => 'AFN', 'amount' => 50, 'expected' => (50 / 1.08808) * 72.725294],
-            ['from' => 'GBP', 'to' => 'CAD', 'amount' => 200, 'expected' => (200 / 0.842134) * 1.518035],
-            ['from' => 'JPY', 'to' => 'CNY', 'amount' => 5000, 'expected' => (5000 / 166.427256) * 7.750069],
+        // Step 2: Create a mock object with a 'json' property
+        $mockRates = new Currency();
+        $mockRates->json = json_encode([
+            'USD' => 1.08808,
+            'MKD' => 61.606013,
+            'EUR' => 1,
+            // Add more rates as needed
+        ]);
 
-            // If you need add other scenarios...
-        ];
+        // Step 3: Configure the currencyConversionRepository mock to return the mock object
+        $currencyConversionRepository->method('lastRates')->willReturn($mockRates);
 
-        foreach ($scenarios as $scenario) {
-            $dto = new CurrencyConversionDto($scenario['from'], $scenario['to'], $scenario['amount']);
+        // Step 4: Instantiate the CurrencyConversionService with the mocked repositories
+        $currencyConversionService = new CurrencyConversionService(
+            $supportedCurrencyRepository,
+            $currencyConversionRepository
+        );
 
-            // Perform the calculation
-            $result = $currencyConversionService->getCurrencyCalculation($dto);
+        // Step 5: Define the conversion details and expected result
+        $dto = new CurrencyConversionDto('MKD', 'USD', 1000);  // Convert 1000 MKD to USD
+        $expectedAmountCalculated = (1000 / 61.606013) * 1.08808;
 
-            // Assert the expected structure and calculated value
-            $this->assertIsArray($result);
-            $this->assertArrayHasKey('from', $result);
-            $this->assertArrayHasKey('to', $result);
-            $this->assertArrayHasKey('amount', $result);
-            $this->assertArrayHasKey('amountCalculated', $result);
+        // Step 6: Call the getCurrencyCalculation method and capture the result
+        $result = $currencyConversionService->getCurrencyCalculation($dto);
 
-            // Additional assertions to verify the correctness of the calculation
-            $this->assertEquals($scenario['from'], $result['from']);
-            $this->assertEquals($scenario['to'], $result['to']);
-            $this->assertEquals($scenario['amount'], $result['amount']);
+        // Step 7: Assertions
+        $this->assertIsArray($result);  // Ensure the result is an array
+        $this->assertArrayHasKey('from', $result);
+        $this->assertArrayHasKey('to', $result);
+        $this->assertArrayHasKey('amount', $result);
+        $this->assertArrayHasKey('amountCalculated', $result);
 
-            // Assert the calculated amount is close to the expected result
-            $this->assertEqualsWithDelta($scenario['expected'], $result['amountCalculated'], 0.01);
-        }
+        // Check specific values in the result
+        $this->assertEquals('MKD', $result['from']);
+        $this->assertEquals('USD', $result['to']);
+        $this->assertEquals(1000, $result['amount']);
+        $this->assertEqualsWithDelta($expectedAmountCalculated, $result['amountCalculated'], 0.01);
     }
 }

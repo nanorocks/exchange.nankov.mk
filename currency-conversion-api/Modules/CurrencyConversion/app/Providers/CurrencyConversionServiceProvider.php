@@ -5,9 +5,12 @@ namespace Modules\CurrencyConversion\Providers;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\CurrencyConversion\Console\SupportedFixerExchangeRateCommand;
 use Modules\CurrencyConversion\Console\SyncFixerExchangeRateCommand;
 use Modules\CurrencyConversion\Http\Repositories\CurrencyConversionRepository;
 use Modules\CurrencyConversion\Http\Repositories\Interfaces\ICurrencyConversionRepository;
+use Modules\CurrencyConversion\Http\Repositories\Interfaces\ISupportedCurrencyRepository;
+use Modules\CurrencyConversion\Http\Repositories\SupportedCurrencyRepository;
 use Modules\CurrencyConversion\Http\Services\CurrencyConversionService;
 use Modules\CurrencyConversion\Http\Services\Interfaces\ICurrencyConversionService;
 use Nwidart\Modules\Traits\PathNamespace;
@@ -35,6 +38,8 @@ class CurrencyConversionServiceProvider extends ServiceProvider
         // Bind interfaces, dependency inversion principle
         $this->app->bind(ICurrencyConversionRepository::class, CurrencyConversionRepository::class);
         $this->app->bind(ICurrencyConversionService::class, CurrencyConversionService::class);
+
+        $this->app->bind(ISupportedCurrencyRepository::class, SupportedCurrencyRepository::class);
     }
 
     /**
@@ -52,7 +57,8 @@ class CurrencyConversionServiceProvider extends ServiceProvider
     protected function registerCommands(): void
     {
          $this->commands([
-             SyncFixerExchangeRateCommand::class
+             SyncFixerExchangeRateCommand::class,
+             SupportedFixerExchangeRateCommand::class
          ]);
     }
 

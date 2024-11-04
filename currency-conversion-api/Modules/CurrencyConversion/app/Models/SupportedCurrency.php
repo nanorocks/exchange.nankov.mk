@@ -14,6 +14,8 @@ class SupportedCurrency extends Model
     public const ID = 'id';
     public const KEY = 'key';
     public const VALUE = 'value';
+    public const CREATED_AT = 'created_at';
+    public const UPDATED_AT = 'updated_at';
 
     protected $table = self::TABLE;
     /**
@@ -24,8 +26,8 @@ class SupportedCurrency extends Model
         self::VALUE
     ];
 
-    // protected static function newFactory(): SupportedCurrencyFactory
-    // {
-    //     // return SupportedCurrencyFactory::new();
-    // }
+    protected $hidden = [
+        self::CREATED_AT,
+        self::UPDATED_AT
+    ];
 }

@@ -10,10 +10,15 @@ use Modules\CurrencyConversion\Transformers\CurrencyConversionPostResource;
 
 class CurrencyConversionActionController extends Controller
 {
+    /**
+     * @param CurrencyConversionPostRequest $request
+     * @param ICurrencyConversionService $currencyConversionService
+     * @return CurrencyConversionPostResource
+     */
     public function __invoke(CurrencyConversionPostRequest $request, ICurrencyConversionService $currencyConversionService): CurrencyConversionPostResource
     {
         return new CurrencyConversionPostResource(
-            $currencyConversionService->getCurrencies(
+            $currencyConversionService->getCurrencyCalculation(
                 $request->toDto()
             )
         );

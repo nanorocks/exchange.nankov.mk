@@ -13,8 +13,8 @@ class CurrencyConversionPostResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'message' => 'Currency Conversions are synced successfully.',
-            'on_date' => now(),
+            'success' => true,
+            'on_date' => now()->format('Y-m-d'),
             'data' => parent::toArray($request)
         ];
     }

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\CurrencyConversion\Http\Controllers\CurrencyConversionActionController;
+use Modules\CurrencyConversion\Http\Controllers\SupportedCurrencyExchangeActionController;
 
 /*
  *--------------------------------------------------------------------------
@@ -17,5 +18,6 @@ use Modules\CurrencyConversion\Http\Controllers\CurrencyConversionActionControll
 Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
 });
 
+Route::post('/v1/exchange-rates', CurrencyConversionActionController::class);
 
-Route::post('/exchange-rate', [CurrencyConversionActionController::class]);
+Route::post('/v1/supported-exchange-rates', SupportedCurrencyExchangeActionController::class);
