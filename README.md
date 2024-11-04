@@ -1,6 +1,7 @@
-# php-code-challenge-currency-conversion
+# Currency conversion
 Laravel API for currency conversion
 
+### Setup
 The project is created over https://laravel.com/docs/11.x#creating-a-laravel-project
 The tech-stack will be 
  - Php8.3
@@ -34,10 +35,10 @@ Running test are run with:
 - docker exec -it currency-conversion-api php artisan test
 ```
 
-# Packages / Third party services
+### Packages / Third party services
 - For powering the docker setup for the project https://laravel.com/docs/11.x/sail#main-content
 - For providing the currency exchange like project module https://laravelmodules.com/ and following modular monolith architecture.
     - According to doc. this package offer module reusability even per projects. Ref. https://laravelmodules.com/docs/v11/publishing-modules
 
-# API Postman collection
+### API Postman collection
 - https://api.postman.com/collections/4387865-4bccca9a-cea7-4f81-b7e1-280d1ff6e609?access_key=<ask_for_it>
